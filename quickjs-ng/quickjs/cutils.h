@@ -30,8 +30,8 @@
 #include <inttypes.h>
 
 #if defined(_MSC_VER)
-#include <windows.h>
 #include <winsock2.h>
+#include <windows.h>
 #include <malloc.h>
 #define alloca _alloca
 #define ssize_t ptrdiff_t
@@ -192,9 +192,10 @@ static inline int clz32(unsigned int a)
 static inline int clz64(uint64_t a)
 {
 #if defined(_MSC_VER) && !defined(__clang__)
-    unsigned long index;
-    _BitScanReverse64(&index, a);
-    return 63 - index;
+    if (a >> 32)
+        return clz32((unsigned)(a >> 32));
+    else
+        return clz32((unsigned)(a)) + 32;
 #else
     return __builtin_clzll(a);
 #endif
@@ -216,9 +217,10 @@ static inline int ctz32(unsigned int a)
 static inline int ctz64(uint64_t a)
 {
 #if defined(_MSC_VER) && !defined(__clang__)
-    unsigned long index;
-    _BitScanForward64(&index, a);
-    return index;
+    if (a & 0xffffffff)
+        return clz32((unsigned)(a));
+    else
+        return clz32((unsigned)(a << 32)) + 32;
 #else
     return __builtin_ctzll(a);
 #endif

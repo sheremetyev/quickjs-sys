@@ -16,8 +16,6 @@ extern "C" {
     fn JS_VALUE_GET_NORM_TAG_real(v: JSValue) -> ::std::os::raw::c_int;
     fn JS_IsNumber_real(v: JSValue) -> bool;
     fn JS_IsBigInt_real(ctx: *mut JSContext, v: JSValue) -> bool;
-    fn JS_IsBigFloat_real(v: JSValue) -> bool;
-    fn JS_IsBigDecimal_real(v: JSValue) -> bool;
     fn JS_IsBool_real(v: JSValue) -> bool;
     fn JS_IsNull_real(v: JSValue) -> bool;
     fn JS_IsUndefined_real(v: JSValue) -> bool;
@@ -95,16 +93,6 @@ pub unsafe fn JS_IsNumber(v: JSValue) -> bool {
 /// check if a JSValue is a BigInt
 pub unsafe fn JS_IsBigInt(ctx: *mut JSContext, v: JSValue) -> bool {
     JS_IsBigInt_real(ctx,v)
-}
-
-/// check if a JSValue is a BigFloat
-pub unsafe fn JS_IsBigFloat(v: JSValue) -> bool {
-    JS_IsBigFloat_real(v)
-}
-
-/// check if a JSValue is a BigDecimal
-pub unsafe fn JS_IsBigDecimal(v: JSValue) -> bool {
-    JS_IsBigDecimal_real(v)
 }
 
 /// check if a JSValue is a Boolean
